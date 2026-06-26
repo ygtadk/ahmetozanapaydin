@@ -1,0 +1,41 @@
+<div class="world-field" aria-hidden="true">
+  <div class="world-field__grain"></div>
+  <div class="world-field__runes"></div>
+  <div class="world-field__particles"></div>
+  <div class="world-field__veil"></div>
+</div>
+
+<script>
+  const root = document.documentElement;
+  const isLite = matchMedia("(pointer: coarse)").matches || matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let ticking = false;
+
+  const syncWorld = () => {
+    const max = Math.max(1, document.body.scrollHeight - innerHeight);
+    root.style.setProperty("--scroll-progress", `${scrollY / max}`);
+    root.style.setProperty("--scroll-y", `${scrollY}`);
+    ticking = false;
+  };
+
+  const syncPointer = (event) => {
+    if (isLite) return;
+    const x = event.clientX / innerWidth;
+    const y = event.clientY / innerHeight;
+    root.style.setProperty("--pointer-x", `${x}`);
+    root.style.setProperty("--pointer-y", `${y}`);
+    root.style.setProperty("--pointer-shift-x", `${(x - 0.5) * 28}px`);
+    root.style.setProperty("--pointer-shift-y", `${(y - 0.5) * 28}px`);
+  };
+
+  const requestSync = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(syncWorld);
+    }
+  };
+
+  if (isLite) root.classList.add("perf-lite");
+  addEventListener("scroll", requestSync, { passive: true });
+  addEventListener("pointermove", syncPointer, { passive: true });
+  syncWorld();
+</script>

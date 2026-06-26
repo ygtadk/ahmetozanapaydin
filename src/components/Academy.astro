@@ -1,0 +1,35 @@
+---
+import { en, tr } from "../data/portfolio";
+import { t } from "../i18n";
+import HudSection from "./HudSection.astro";
+const locale = Astro.currentLocale;
+const { education } = locale === "tr" ? tr : en;
+---
+
+<HudSection id="academy" labelledby="academy-title" number="04" label={t(locale, "academy.chapter")} class="academy">
+  <div class="section-copy" data-reveal>
+    <p class="chapter-label">{t(locale, "academy.chapter")}</p>
+    <h2 id="academy-title">{t(locale, "academy.title")}</h2>
+    <p>{t(locale, "academy.intro")}</p>
+  </div>
+
+  <div class="skill-tree" data-skill-tree data-reveal>
+    {education.map((node, index) => (
+      <button class="skill-node" type="button" data-skill-index={index}>
+        <span class="skill-node__rune"></span>
+        <strong>{node.title}</strong>
+        <small>{node.source} / {node.period}</small>
+        <em>{node.unlocked}</em>
+      </button>
+    ))}
+  </div>
+</HudSection>
+
+<script>
+  document.querySelectorAll("[data-skill-index]").forEach((node) => {
+    node.addEventListener("click", () => {
+      node.classList.remove("is-unlocked");
+      requestAnimationFrame(() => node.classList.add("is-unlocked"));
+    });
+  });
+</script>

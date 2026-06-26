@@ -1,0 +1,62 @@
+---
+import { t } from "../i18n";
+
+const locale = Astro.currentLocale;
+const prefix = locale === "tr" ? "/tr/" : "";
+const items = [
+	["01", t(locale, "nav.awakening"), "awakening"],
+	["02", t(locale, "nav.lore"), "lore"],
+	["03", t(locale, "nav.quests"), "quests"],
+	["04", t(locale, "nav.academy"), "academy"],
+	["05", t(locale, "nav.artifacts"), "artifacts"],
+	["06", t(locale, "nav.contact"), "contact"],
+];
+---
+
+<nav class="codex-nav" aria-label="Portfolio sections">
+	{items.map(([number, label, id]) => (
+		<a href={`${prefix}#${id}`} data-section-link>
+			<span>{number}</span>
+			<strong>{label}</strong>
+		</a>
+	))}
+	<div class="codex-nav__language" aria-label="Language">
+		<a class:list={{ "is-active": locale !== "tr" }} href="/" data-locale-switch>
+			<strong>EN</strong>
+		</a>
+		<a class:list={{ "is-active": locale === "tr" }} href="/tr/" data-locale-switch>
+			<strong>TR</strong>
+		</a>
+	</div>
+</nav>
+
+<script>
+	const links = Array.from(document.querySelectorAll(".codex-nav [data-section-link]"));
+	const sections = links
+		.map((link) => document.querySelector(link.getAttribute("href")?.split("#")[1] ? `#${link.getAttribute("href")?.split("#")[1]}` : ""))
+		.filter(Boolean);
+
+	const navObserver = new IntersectionObserver(
+		(entries) => {
+			for (const entry of entries) {
+				if (!entry.isIntersecting) continue;
+				links.forEach((link) => {
+					const id = link.getAttribute("href")?.split("#")[1];
+					link.classList.toggle("is-active", id === entry.target.id);
+				});
+			}
+		},
+		{ threshold: 0.55 },
+	);
+
+	sections.forEach((section) => navObserver.observe(section));
+
+	document.querySelectorAll("[data-locale-switch]").forEach((link) => {
+		link.addEventListener("click", () => {
+			if (!location.hash) return;
+			const url = new URL(link.href);
+			url.hash = location.hash;
+			link.href = url.toString();
+		});
+	});
+</script>

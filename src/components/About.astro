@@ -1,0 +1,51 @@
+---
+import { en, tr } from "../data/portfolio";
+import { t } from "../i18n";
+import HudSection from "./HudSection.astro";
+const locale = Astro.currentLocale;
+const { profile, stats } = locale === "tr" ? tr : en;
+
+const points = stats
+  .map((stat, index) => {
+    const angle = (Math.PI * 2 * index) / stats.length - Math.PI / 2;
+    const radius = 46 * (stat.value / 100);
+    return `${50 + Math.cos(angle) * radius},${50 + Math.sin(angle) * radius}`;
+  })
+  .join(" ");
+---
+
+<HudSection id="lore" labelledby="lore-title" number="02" label={t(locale, "about.chapter")} class="lore">
+  <div class="section-copy" data-reveal>
+    <p class="chapter-label">{t(locale, "about.chapter")}</p>
+    <h2 id="lore-title">{t(locale, "about.title")}</h2>
+    <p>{profile.backstory}</p>
+  </div>
+
+  <div class="stat-panel" data-reveal>
+    <div class="radar" aria-label="Narrative design stat chart">
+      <svg viewBox="0 0 100 100" role="img">
+        <title>Narrative design attributes</title>
+        <polygon class="radar__grid" points="50,6 88,28 88,72 50,94 12,72 12,28"></polygon>
+        <polygon class="radar__grid radar__grid--inner" points="50,22 74,36 74,64 50,78 26,64 26,36"></polygon>
+        <polygon class="radar__shape" points={points}></polygon>
+        {stats.map((stat, index) => {
+          const angle = (Math.PI * 2 * index) / stats.length - Math.PI / 2;
+          const x = 50 + Math.cos(angle) * 47;
+          const y = 50 + Math.sin(angle) * 47;
+          return <circle cx={x} cy={y} r="1.8"></circle>;
+        })}
+      </svg>
+    </div>
+    <dl class="stat-list">
+      {stats.map((stat) => (
+        <div>
+          <dt>{stat.label}</dt>
+          <dd>
+            <span style={`width: ${stat.value}%`}></span>
+            <strong>{stat.value}</strong>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</HudSection>

@@ -1,0 +1,29 @@
+---
+type Props = {
+	id: string;
+	labelledby: string;
+	number: string;
+	label: string;
+	class?: string;
+};
+
+const { id, labelledby, number, label, class: className = "" } = Astro.props;
+---
+
+<section class:list={["snap-section", "hud-section", className]} id={id} aria-labelledby={labelledby}>
+	<div class="scene-bg" aria-hidden="true">
+		<span class="scene-bg__deep" data-depth="0"></span>
+		<span class="scene-bg__halo" data-depth="1"></span>
+		<span class="scene-bg__chart" data-depth="2"></span>
+		<span class="scene-bg__embers" data-depth="5"></span>
+	</div>
+	<aside class="chapter-rail" aria-hidden="true">
+		<span>{number}</span>
+		<strong>{label}</strong>
+		<i></i>
+		<small>ᚠ ᚢ ᚦ ᚨ ᚱ</small>
+	</aside>
+	<div class="hud-body">
+		<slot />
+	</div>
+</section>

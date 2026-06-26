@@ -1,14 +1,14 @@
 ---
-import WorldField from "../components/WorldField.astro";
-import Hero from "../components/Hero.astro";
-import About from "../components/About.astro";
-import QuestLog from "../components/QuestLog.astro";
-import Academy from "../components/Academy.astro";
-import Artifacts from "../components/Artifacts.astro";
-import Contact from "../components/Contact.astro";
-import CodexNav from "../components/CodexNav.astro";
-import { t } from "../i18n";
-import "../styles/global.css";
+import WorldField from "../../components/WorldField.astro";
+import Hero from "../../components/Hero.astro";
+import About from "../../components/About.astro";
+import QuestLog from "../../components/QuestLog.astro";
+import Academy from "../../components/Academy.astro";
+import Artifacts from "../../components/Artifacts.astro";
+import Contact from "../../components/Contact.astro";
+import CodexNav from "../../components/CodexNav.astro";
+import { t } from "../../i18n";
+import "../../styles/global.css";
 
 const locale = Astro.currentLocale;
 ---
@@ -25,14 +25,6 @@ const locale = Astro.currentLocale;
 		<link rel="alternate" hreflang="tr" href="/tr/" />
 		<link rel="alternate" hreflang="x-default" href="/" />
 		<title>{t(locale, "meta.title")}</title>
-		<script is:inline>
-			const prefersTurkish = navigator.languages?.some((language) => language.toLowerCase().startsWith("tr"))
-				|| navigator.language?.toLowerCase().startsWith("tr");
-
-			if (location.pathname === "/" && prefersTurkish) {
-				location.replace(`/tr/${location.search}${location.hash}`);
-			}
-		</script>
 	</head>
 	<body>
 		<WorldField />

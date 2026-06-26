@@ -1,0 +1,54 @@
+---
+import { en, tr } from "../data/portfolio";
+import { t } from "../i18n";
+import HudSection from "./HudSection.astro";
+const locale = Astro.currentLocale;
+const { projects } = locale === "tr" ? tr : en;
+---
+
+<HudSection
+  id="artifacts"
+  labelledby="artifacts-title"
+  number="05"
+  label={t(locale, "artifacts.chapter")}
+  class="artifacts"
+>
+  <div data-artifacts style={`--artifact-accent: ${projects[0].palette}`}>
+    <div class="artifacts__intro" data-reveal>
+      <p class="chapter-label">{t(locale, "artifacts.chapter")}</p>
+      <h2 id="artifacts-title">{t(locale, "artifacts.title")}</h2>
+    </div>
+
+    <div class="artifact-rail" aria-label="Project gallery" data-reveal>
+      {projects.map((project) => (
+        <article class="artifact-card" data-palette={project.palette}>
+          <div class="artifact-card__cover">
+            <span>{project.kind}</span>
+            <strong>{project.title}</strong>
+          </div>
+          <div class="artifact-card__body">
+            <p>{project.theme}</p>
+            <h3>{project.title}</h3>
+            <p>{project.summary}</p>
+            <div>
+              {project.tags.map((tag) => <span>{tag}</span>)}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</HudSection>
+
+<script>
+  const section = document.querySelector("[data-artifacts]");
+
+  if (section instanceof HTMLElement) {
+    section.querySelectorAll("[data-palette]").forEach((card) => {
+      card.addEventListener("pointerenter", () => {
+        const palette = card.getAttribute("data-palette");
+        if (palette) section.style.setProperty("--artifact-accent", palette);
+      });
+    });
+  }
+</script>

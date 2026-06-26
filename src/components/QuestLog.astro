@@ -1,0 +1,97 @@
+---
+import { en, tr } from "../data/portfolio";
+import { t } from "../i18n";
+import HudSection from "./HudSection.astro";
+const locale = Astro.currentLocale;
+const { quests } = locale === "tr" ? tr : en;
+
+const activeQuest = quests[0];
+const questJson = JSON.stringify(quests).replaceAll("<", "\\u003c");
+---
+
+<HudSection id="quests" labelledby="quests-title" number="03" label={t(locale, "questlog.chapter")} class="quest-log">
+  <div class="quest-log__header" data-reveal>
+    <p class="chapter-label">{t(locale, "questlog.chapter")}</p>
+    <h2 id="quests-title">{t(locale, "questlog.title")}</h2>
+  </div>
+
+  <div class="quest-log__grid" data-quest-log data-reveal>
+    <div class="quest-list" role="list">
+      {quests.map((quest, index) => (
+        <button
+          class:list={["quest-card", { "is-active": index === 0 }]}
+          type="button"
+          data-quest-index={index}
+          aria-pressed={index === 0 ? "true" : "false"}
+        >
+          <span>{quest.status === "active" ? t(locale, "questlog.active") : t(locale, "questlog.completed")}</span>
+          <strong>{quest.title}</strong>
+          <small>{quest.role} / {quest.period}</small>
+        </button>
+      ))}
+    </div>
+
+    <aside class="quest-detail" aria-live="polite">
+      <p data-quest-status>{activeQuest.status === "active" ? t(locale, "questlog.active") : t(locale, "questlog.completed")}</p>
+      <h3 data-quest-title>{activeQuest.title}</h3>
+      <span data-quest-role>{activeQuest.role} / {activeQuest.period}</span>
+      <p data-quest-summary>{activeQuest.summary}</p>
+      <div class="tool-rack" data-quest-tools>
+        {activeQuest.tools.map((tool) => <span>{tool}</span>)}
+      </div>
+      <ul data-quest-achievements>
+        {activeQuest.achievements.map((achievement) => <li>{achievement}</li>)}
+      </ul>
+    </aside>
+  </div>
+</HudSection>
+
+<script id="quest-data" type="application/json" set:html={questJson}></script>
+
+<script>
+  const questData = document.querySelector("#quest-data");
+  const quests = JSON.parse(questData?.textContent ?? "[]");
+  const root = document.querySelector("[data-quest-log]");
+  const locale = document.documentElement.lang;
+
+  if (root instanceof HTMLElement) {
+    const cards = Array.from(root.querySelectorAll("[data-quest-index]"));
+    const status = root.querySelector("[data-quest-status]");
+    const title = root.querySelector("[data-quest-title]");
+    const role = root.querySelector("[data-quest-role]");
+    const summary = root.querySelector("[data-quest-summary]");
+    const tools = root.querySelector("[data-quest-tools]");
+    const achievements = root.querySelector("[data-quest-achievements]");
+
+    const statusLabel = { active: "Active Quest", completed: "Completed Quest" };
+    const statusLabelTr = { active: "Aktif Görev", completed: "Tamamlanan Görev" };
+    const labels = locale === "tr" ? statusLabelTr : statusLabel;
+
+    const render = (index) => {
+      const quest = quests[index];
+      if (!quest) return;
+
+      cards.forEach((card, cardIndex) => {
+        card.classList.toggle("is-active", cardIndex === index);
+        card.setAttribute("aria-pressed", cardIndex === index ? "true" : "false");
+      });
+
+      if (status) status.textContent = labels[quest.status];
+      if (title) title.textContent = quest.title;
+      if (role) role.textContent = `${quest.role} / ${quest.period}`;
+      if (summary) summary.textContent = quest.summary;
+      if (tools) tools.innerHTML = quest.tools.map((tool) => `<span>${tool}</span>`).join("");
+      if (achievements) {
+        achievements.innerHTML = quest.achievements
+          .map((achievement) => `<li>${achievement}</li>`)
+          .join("");
+      }
+    };
+
+    cards.forEach((card) => {
+      const index = Number(card.getAttribute("data-quest-index"));
+      card.addEventListener("click", () => render(index));
+      card.addEventListener("pointerenter", () => render(index));
+    });
+  }
+</script>
