@@ -50,7 +50,7 @@ export const en: Content = {
 		title: "Game Researcher & Narrative Designer",
 		email: "ahmetozanap@gmail.com",
 		linkedin: "https://www.linkedin.com/in/ahmetozanapaydin",
-		cv: "/files/ahmet-ozan-apaydin-cv.pdf",
+		cv: "/files/resume-en.pdf",
 		backstory:
 			"A Narrative Designer and Game Researcher combining 3 years of industry experience with an M.A. in Game Design. Ahmet specializes in bridging the gap between systemic gameplay and cinematic storytelling—actively developing frameworks to resolve ludonarrative dissonance. Whether crafting dystopian sci-fi bureaucracies or directing transmedia universes, he treats narrative as a playable mechanic rather than a static wrapper.",
 	},
@@ -212,7 +212,7 @@ export const tr: Content = {
 		title: "Oyun Araştırmacısı & Anlatım Tasarımcısı",
 		email: "ahmetozanap@gmail.com",
 		linkedin: "https://www.linkedin.com/in/ahmetozanapaydin",
-		cv: "/files/ahmet-ozan-apaydin-cv.pdf",
+		cv: "/files/resume-en.pdf",
 		backstory:
 			"3 yıllık oyun sektörü deneyimini Oyun Tasarımı yüksek lisansıyla birleştiren bir Anlatım Tasarımcısı ve Araştırmacı. Ahmet, sistemsel oynanış ile sinematik hikaye anlatımı arasındaki köprüyü kurmaya odaklanıyor; ludonarratif uyumsuzluğu çözmek için aktif teorik modeller geliştiriyor. İster distopik bürokrasiler tasarlasın ister transmedya evrenleri yönetsin, hikayeyi statik bir ambalaj değil, oynanabilir bir mekanik olarak ele alıyor.",
 	},

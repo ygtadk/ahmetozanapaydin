@@ -13,42 +13,61 @@ const { projects } = locale === "tr" ? tr : en;
   label={t(locale, "artifacts.chapter")}
   class="artifacts"
 >
-  <div data-artifacts style={`--artifact-accent: ${projects[0].palette}`}>
+  <div data-artifacts>
     <div class="artifacts__intro" data-reveal>
-      <p class="chapter-label">{t(locale, "artifacts.chapter")}</p>
       <h2 id="artifacts-title">{t(locale, "artifacts.title")}</h2>
     </div>
 
-    <div class="artifact-rail" aria-label="Project gallery" data-reveal>
-      {projects.map((project) => (
-        <article class="artifact-card" data-palette={project.palette}>
-          <div class="artifact-card__cover">
-            <span>{project.kind}</span>
-            <strong>{project.title}</strong>
-          </div>
-          <div class="artifact-card__body">
-            <p>{project.theme}</p>
-            <h3>{project.title}</h3>
-            <p>{project.summary}</p>
-            <div>
-              {project.tags.map((tag) => <span>{tag}</span>)}
+    <div class="artifact-rail__wrap">
+      <button class="artifact-arrow artifact-arrow--prev" aria-label="Previous" data-arrow="prev">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+
+      <div class="artifact-rail" aria-label="Project gallery" data-reveal>
+        {projects.map((project) => (
+          <article class="artifact-card">
+            <div class="artifact-card__cover">
+              <span>{project.kind}</span>
+              <strong>{project.title}</strong>
             </div>
-          </div>
-        </article>
-      ))}
+            <div class="artifact-card__body">
+              <p>{project.theme}</p>
+              <p>{project.summary}</p>
+              <div>
+                {project.tags.map((tag) => <span>{tag}</span>)}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <button class="artifact-arrow artifact-arrow--next" aria-label="Next" data-arrow="next">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
     </div>
   </div>
 </HudSection>
 
 <script>
-  const section = document.querySelector("[data-artifacts]");
+  const wrap = document.querySelector(".artifact-rail__wrap");
+  const rail = wrap?.querySelector(".artifact-rail");
+  if (wrap instanceof HTMLElement && rail instanceof HTMLElement) {
+    const getScrollAmount = () => {
+      const card = rail.querySelector(".artifact-card");
+      if (!card) return 200;
+      return card.getBoundingClientRect().width + 16;
+    };
 
-  if (section instanceof HTMLElement) {
-    section.querySelectorAll("[data-palette]").forEach((card) => {
-      card.addEventListener("pointerenter", () => {
-        const palette = card.getAttribute("data-palette");
-        if (palette) section.style.setProperty("--artifact-accent", palette);
+    wrap.querySelectorAll("[data-arrow]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const dir = (btn as HTMLElement).dataset.arrow;
+        rail.scrollBy({ left: dir === "next" ? getScrollAmount() : -getScrollAmount(), behavior: "smooth" });
       });
+    });
+
+    rail.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") rail.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
+      if (e.key === "ArrowLeft") rail.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
     });
   }
 </script>
