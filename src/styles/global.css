@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "DragonHunter";
+  src: url("/fonts/DragonHunter.otf") format("opentype");
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
   --bg: #05070a;
@@ -12,6 +18,8 @@
   --teal: #2fd2c4;
   --crimson: #d04b42;
   --violet: #8f55d8;
+  --azure: #4f8cff;
+  --rose: #e65f9a;
   --shadow: 0 24px 90px rgba(0, 0, 0, 0.45);
   --mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --body: Inter, Avenir, "Segoe UI", system-ui, sans-serif;
@@ -21,6 +29,7 @@
   --pointer-y: 0.5;
   --pointer-shift-x: 0px;
   --pointer-shift-y: 0px;
+  --active-section-accent: var(--gold);
 }
 
 * {
@@ -151,12 +160,12 @@ button {
 }
 
 .hud-section {
-  grid-template-columns: clamp(92px, 8vw, 150px) minmax(0, 1fr);
-  border-top: 1px solid rgba(180, 108, 48, 0.5);
-  border-bottom: 1px solid rgba(180, 108, 48, 0.5);
+  grid-template-columns: clamp(104px, 8vw, 150px) minmax(0, 1fr);
+  border-top: 1px solid color-mix(in srgb, var(--section-accent, var(--gold)), transparent 48%);
+  border-bottom: 1px solid color-mix(in srgb, var(--section-accent, var(--gold)), transparent 48%);
   background: rgba(2, 4, 7, 0.38);
   box-shadow:
-    inset 0 0 0 1px rgba(201, 138, 55, 0.13),
+    inset 0 0 0 1px color-mix(in srgb, var(--section-accent, var(--gold)), transparent 86%),
     inset 0 0 90px rgba(0, 0, 0, 0.58);
 }
 
@@ -166,7 +175,7 @@ button {
   position: absolute;
   inset: 10px;
   z-index: 0;
-  border: 1px solid rgba(201, 138, 55, 0.2);
+  border: 1px solid color-mix(in srgb, var(--section-accent, var(--gold)), transparent 80%);
   pointer-events: none;
 }
 
@@ -240,9 +249,10 @@ button {
   display: grid;
   align-content: start;
   gap: 1.1rem;
+  min-width: 0;
   min-height: 100svh;
-  padding: clamp(1.8rem, 3vw, 3.3rem) 1.25rem;
-  border-right: 1px solid rgba(180, 108, 48, 0.34);
+  padding: clamp(1.8rem, 3vw, 3.3rem) clamp(0.75rem, 1.2vw, 1.25rem);
+  border-right: 1px solid color-mix(in srgb, var(--section-accent, var(--gold)), transparent 66%);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--section-accent, var(--gold)), transparent 89%), transparent 35%),
     radial-gradient(circle at 50% 62%, color-mix(in srgb, var(--section-accent, var(--gold)), transparent 76%), transparent 5rem),
@@ -255,57 +265,88 @@ button {
   content: "";
   position: absolute;
   left: 50%;
-  width: 3.4rem;
-  height: 3.4rem;
-  border: 1px solid color-mix(in srgb, var(--section-accent, var(--gold)), transparent 42%);
-  opacity: 0.6;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid color-mix(in srgb, var(--section-accent, var(--gold)), transparent 62%);
+  opacity: 0.38;
   transform: translateX(-50%) rotate(45deg);
 }
 
 .chapter-rail::before {
   top: 1rem;
+  box-shadow:
+    2.15rem 2.15rem 0 -1.15rem color-mix(in srgb, var(--section-accent, var(--gold)), transparent 76%),
+    -2.4rem 7.2rem 0 -1.3rem color-mix(in srgb, var(--section-accent, var(--gold)), transparent 82%);
 }
 
 .chapter-rail::after {
   bottom: 1rem;
+  width: 3.8rem;
+  height: 3.8rem;
+  opacity: 0.32;
+  box-shadow:
+    -2.5rem -6.4rem 0 -1.45rem color-mix(in srgb, var(--section-accent, var(--gold)), transparent 80%),
+    2.3rem -10.5rem 0 -1.55rem color-mix(in srgb, var(--section-accent, var(--gold)), transparent 84%);
 }
 
 .chapter-rail span {
   color: color-mix(in srgb, var(--section-accent, var(--gold)), #f3dfaa 20%);
   font-family: var(--mono);
-  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-size: clamp(1.8rem, 3.2vw, 4rem);
   line-height: 0.8;
 }
 
 .chapter-rail strong {
-  width: min-content;
+  max-width: 100%;
   color: var(--section-accent, var(--gold));
   font-family: var(--mono);
-  font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+  font-size: clamp(0.56rem, 0.86vw, 1.12rem);
   line-height: 1.25;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .chapter-rail i {
+  position: relative;
   width: 3.4rem;
   height: 3.4rem;
-  border: 1px solid color-mix(in srgb, var(--section-accent, var(--gold)), transparent 28%);
+  border: 1px solid color-mix(in srgb, var(--section-accent, var(--gold)), transparent 52%);
   transform: rotate(45deg);
   background:
     linear-gradient(90deg, transparent 47%, currentColor 49% 51%, transparent 53%),
     linear-gradient(0deg, transparent 47%, currentColor 49% 51%, transparent 53%);
-  color: color-mix(in srgb, var(--section-accent, var(--gold)), transparent 25%);
+  color: color-mix(in srgb, var(--section-accent, var(--gold)), transparent 58%);
   box-shadow:
-    0 0 22px color-mix(in srgb, var(--section-accent, var(--gold)), transparent 68%),
-    inset 0 0 18px color-mix(in srgb, var(--section-accent, var(--gold)), transparent 78%);
+    0 0 14px color-mix(in srgb, var(--section-accent, var(--gold)), transparent 82%),
+    inset 0 0 12px color-mix(in srgb, var(--section-accent, var(--gold)), transparent 88%);
+}
+
+.chapter-rail i::before,
+.chapter-rail i::after {
+  content: "";
+  position: absolute;
+  border: 1px solid color-mix(in srgb, var(--section-accent, var(--gold)), transparent 70%);
+  opacity: 0.72;
+}
+
+.chapter-rail i::before {
+  inset: -0.85rem;
+  transform: scale(0.52);
+}
+
+.chapter-rail i::after {
+  inset: 0.55rem -1.45rem -1.45rem 0.55rem;
+  transform: scale(0.38);
 }
 
 .chapter-rail small {
-  max-width: 4rem;
-  color: rgba(201, 138, 55, 0.35);
+  max-width: 100%;
+  color: color-mix(in srgb, var(--section-accent, var(--gold)), transparent 65%);
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: clamp(0.55rem, 0.8vw, 0.78rem);
   line-height: 1.65;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
 .hud-body {
@@ -335,7 +376,7 @@ button {
   gap: 0.45rem;
   min-width: 7.2rem;
   padding: 0.45rem 0.55rem;
-  border: 1px solid rgba(201, 138, 55, 0.24);
+  border: 1px solid color-mix(in srgb, var(--active-section-accent), transparent 76%);
   background: rgba(5, 7, 10, 0.62);
   color: var(--muted);
   font-family: var(--mono);
@@ -357,9 +398,9 @@ button {
 
 .codex-nav a:hover,
 .codex-nav a.is-active {
-  color: var(--gold);
-  border-color: rgba(201, 138, 55, 0.58);
-  box-shadow: 0 0 22px rgba(201, 138, 55, 0.16);
+  color: var(--active-section-accent);
+  border-color: color-mix(in srgb, var(--active-section-accent), transparent 42%);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--active-section-accent), transparent 84%);
 }
 
 .codex-nav__language {
@@ -385,7 +426,7 @@ button {
 .quest-detail > p,
 .artifact-card__cover span {
   margin: 0;
-  color: var(--gold);
+  color: var(--section-accent, var(--gold));
   font-family: var(--mono);
   font-size: 0.76rem;
   text-transform: uppercase;
@@ -459,23 +500,56 @@ p {
 .hero .hud-body {
   place-items: center;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.34)),
-    radial-gradient(circle at 50% 18%, rgba(201, 138, 55, 0.2), transparent 16rem),
-    radial-gradient(circle at 50% 85%, rgba(47, 210, 196, 0.1), transparent 22rem);
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)),
+    radial-gradient(circle at 50% 82%, rgba(201, 138, 55, 0.08), transparent 24rem);
 }
 
 .hero .scene-bg__deep {
+  opacity: 0.9;
   background:
-    linear-gradient(180deg, rgba(2, 4, 7, 0.06), rgba(0, 0, 0, 0.76)),
-    radial-gradient(ellipse at 18% 88%, rgba(24, 37, 43, 0.95) 0 4rem, transparent 4.1rem),
-    radial-gradient(ellipse at 84% 86%, rgba(28, 24, 25, 0.95) 0 5.2rem, transparent 5.3rem),
-    radial-gradient(ellipse at 50% 94%, #15100d 0 10rem, transparent 10.2rem),
-    linear-gradient(180deg, #05090d 0%, #08090b 62%, #020304 100%);
+    linear-gradient(180deg, rgba(3, 7, 10, 0.15), rgba(0, 0, 0, 0.86)),
+    radial-gradient(circle at 74% 20%, rgba(242, 192, 109, 0.35) 0 2.3rem, rgba(242, 192, 109, 0.12) 2.4rem 4.8rem, transparent 4.9rem),
+    linear-gradient(145deg, transparent 0 62%, rgba(18, 24, 23, 0.95) 62.2% 100%) 0 100% / 46% 42% no-repeat,
+    linear-gradient(218deg, transparent 0 58%, rgba(16, 22, 22, 0.96) 58.2% 100%) 100% 100% / 54% 48% no-repeat,
+    linear-gradient(150deg, transparent 0 55%, rgba(24, 34, 35, 0.78) 55.2% 100%) 4% 78% / 34% 33% no-repeat,
+    linear-gradient(212deg, transparent 0 57%, rgba(22, 31, 33, 0.78) 57.2% 100%) 94% 76% / 38% 35% no-repeat,
+    linear-gradient(180deg, #051017 0%, #071015 44%, #050708 100%);
+  transform: scale(1.04) translate3d(calc(var(--pointer-shift-x) * -0.25), calc(var(--pointer-shift-y) * -0.2), 0);
 }
 
 .hero .scene-bg__halo {
-  opacity: 1;
-  mask-image: radial-gradient(circle at 50% 32%, black, transparent 33rem);
+  opacity: 0.75;
+  background:
+    radial-gradient(ellipse at 50% 88%, rgba(201, 138, 55, 0.3), transparent 18rem),
+    linear-gradient(90deg, transparent 34%, rgba(201, 138, 55, 0.16) 49%, rgba(201, 138, 55, 0.22) 50%, rgba(201, 138, 55, 0.16) 51%, transparent 66%),
+    linear-gradient(102deg, transparent 0 46%, rgba(201, 138, 55, 0.18) 46.2% 47%, transparent 47.2%),
+    linear-gradient(78deg, transparent 0 53%, rgba(201, 138, 55, 0.14) 53.2% 54%, transparent 54.2%);
+  mask-image: linear-gradient(180deg, transparent 20%, black 48%, black 96%);
+  animation: none;
+  transform: translate3d(calc(var(--pointer-shift-x) * 0.22), calc(var(--pointer-shift-y) * 0.16), 0);
+}
+
+.hero .scene-bg__chart {
+  opacity: 0.68;
+  background:
+    radial-gradient(ellipse at 50% 79%, rgba(242, 192, 109, 0.22), transparent 13rem),
+    linear-gradient(106deg, transparent 0 45%, rgba(94, 69, 42, 0.82) 45.2% 47%, transparent 47.2%),
+    linear-gradient(74deg, transparent 0 53%, rgba(96, 70, 42, 0.8) 53.2% 55%, transparent 55.2%),
+    linear-gradient(180deg, transparent 0 63%, rgba(55, 40, 26, 0.88) 63.5% 100%);
+  clip-path: polygon(42% 42%, 58% 42%, 69% 100%, 31% 100%);
+  filter: drop-shadow(0 0 18px rgba(201, 138, 55, 0.18));
+  transform: translate3d(calc(var(--pointer-shift-x) * 0.45), calc(var(--pointer-shift-y) * 0.25), 0) scale(1);
+}
+
+.hero .scene-bg__embers {
+  opacity: 0.45;
+  background:
+    radial-gradient(circle, rgba(242, 192, 109, 0.78) 0 1px, transparent 2px) 16% 22% / 18rem 18rem,
+    radial-gradient(circle, rgba(242, 192, 109, 0.62) 0 1px, transparent 2px) 72% 28% / 20rem 20rem,
+    radial-gradient(circle, rgba(47, 210, 196, 0.35) 0 1px, transparent 2px) 54% 18% / 24rem 24rem,
+    radial-gradient(ellipse at 50% 86%, rgba(242, 192, 109, 0.18), transparent 16rem);
+  animation: none;
+  transform: translate3d(calc(var(--pointer-shift-x) * 0.7), calc(var(--pointer-shift-y) * 0.35), 0);
 }
 
 .hero-stage {
@@ -492,32 +566,28 @@ p {
 }
 
 .hero-stage::before {
-  top: -12rem;
-  width: clamp(20rem, 52vw, 45rem);
+  top: -10rem;
+  width: clamp(20rem, 42vw, 35rem);
   aspect-ratio: 1;
-  border: 1px solid rgba(201, 138, 55, 0.32);
+  border: 1px solid rgba(201, 138, 55, 0.12);
   border-radius: 50%;
   background:
-    radial-gradient(circle, transparent 0 38%, rgba(201, 138, 55, 0.3) 38.2% 38.5%, transparent 38.8%),
-    repeating-conic-gradient(from 0deg, rgba(201, 138, 55, 0.2) 0 1deg, transparent 1deg 10deg);
-  filter: drop-shadow(0 0 34px rgba(201, 138, 55, 0.25));
-  animation: haloTurn 40s linear infinite reverse;
+    radial-gradient(circle, transparent 0 42%, rgba(201, 138, 55, 0.1) 42.2% 42.5%, transparent 42.8%),
+    repeating-conic-gradient(from 0deg, rgba(201, 138, 55, 0.07) 0 1deg, transparent 1deg 16deg);
+  filter: drop-shadow(0 0 18px rgba(201, 138, 55, 0.12));
+  animation: none;
 }
 
 .hero-stage::after {
-  bottom: -4.2rem;
-  width: min(38rem, 70vw);
-  height: 4.4rem;
-  background:
-    radial-gradient(ellipse at center, rgba(201, 138, 55, 0.28), transparent 65%),
-    linear-gradient(90deg, transparent, rgba(201, 138, 55, 0.6), transparent);
-  filter: blur(8px);
+  display: none;
 }
 
 .hero-stage {
   display: grid;
   justify-items: center;
   width: min(880px, 92vw);
+  min-height: clamp(420px, 74svh, 720px);
+  align-content: center;
 }
 
 .choice-dialogue,
@@ -579,12 +649,11 @@ p {
 }
 
 .hero__identity::after {
-  bottom: -0.7rem;
-  width: 7px;
-  aspect-ratio: 1;
-  border: 1px solid rgba(201, 138, 55, 0.8);
-  transform: translateX(-50%) rotate(45deg);
-  box-shadow: 0 0 16px rgba(201, 138, 55, 0.72);
+  bottom: -1.4rem;
+  width: min(42rem, 76vw);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 138, 55, 0.82), transparent);
+  box-shadow: 0 0 18px rgba(201, 138, 55, 0.45);
 }
 
 .hero__identity.is-visible {
@@ -596,7 +665,7 @@ p {
 .hero__identity p {
   order: 2;
   margin-bottom: 1rem;
-  color: var(--teal);
+  color: rgba(201, 138, 55, 0.8);
   font-family: var(--mono);
 }
 
@@ -604,50 +673,72 @@ p {
   order: 1;
   color: #f1b65d;
   text-align: center;
+  font-family: "DragonHunter", var(--mono);
   text-shadow: 0 0 18px rgba(201, 138, 55, 0.42);
 }
 
-.hero__identity .rpg-button {
-  order: 3;
-}
-
-.rpg-button {
-  display: inline-flex;
-  align-items: center;
-  min-height: 3rem;
-  padding: 0 1.15rem;
-  border: 1px solid rgba(82, 209, 196, 0.55);
-  color: var(--text);
+.hero__scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.2rem, 5vh, 4rem);
+  margin: 0;
+  color: rgba(234, 220, 193, 0.52);
   font-family: var(--mono);
-  font-size: 0.88rem;
-  background: rgba(82, 209, 196, 0.08);
-  box-shadow: 0 0 26px rgba(82, 209, 196, 0.16);
+  font-size: clamp(0.74rem, 1.1vw, 0.88rem);
+  letter-spacing: 0;
+  text-align: center;
+  text-shadow: 0 0 14px rgba(201, 138, 55, 0.35);
+  transform: translateX(-50%);
   transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
+    color 180ms ease,
+    opacity 180ms ease;
 }
 
-.rpg-button:hover {
-  border-color: rgba(242, 192, 109, 0.8);
-  box-shadow: 0 0 36px rgba(82, 209, 196, 0.26), 0 0 22px rgba(201, 138, 55, 0.18);
-  transform: translateY(-2px);
+.hero__scroll-cue:hover {
+  color: rgba(234, 220, 193, 0.82);
 }
 
 .lore {
-  --section-accent: var(--gold);
+  --section-accent: var(--azure);
 }
 
 .lore .scene-bg__deep {
   background:
-    radial-gradient(circle at 70% 50%, rgba(47, 210, 196, 0.16), transparent 18rem),
-    linear-gradient(90deg, transparent 49.9%, rgba(201, 138, 55, 0.22) 50%, transparent 50.1%),
-    repeating-linear-gradient(90deg, transparent 0 4.3rem, rgba(201, 138, 55, 0.08) 4.3rem 4.36rem),
-    linear-gradient(180deg, #05080a, #070806 80%);
+    linear-gradient(90deg, rgba(79, 140, 255, 0.1) 0 1px, transparent 1px 5.4rem),
+    linear-gradient(0deg, rgba(79, 140, 255, 0.06) 0 1px, transparent 1px 4.2rem),
+    radial-gradient(circle at 72% 48%, rgba(79, 140, 255, 0.24), transparent 18rem),
+    radial-gradient(ellipse at 28% 64%, rgba(79, 140, 255, 0.12), transparent 24rem),
+    linear-gradient(180deg, #04070d, #05070b 80%);
+}
+
+.lore .scene-bg__halo {
+  background:
+    repeating-radial-gradient(circle at 70% 48%, transparent 0 3.6rem, rgba(79, 140, 255, 0.18) 3.65rem 3.75rem),
+    repeating-conic-gradient(from 22deg at 70% 48%, transparent 0 18deg, rgba(79, 140, 255, 0.18) 18deg 19deg, transparent 19deg 30deg);
+  mask-image: radial-gradient(circle at 70% 48%, black, transparent 25rem);
 }
 
 .lore .scene-bg__chart {
+  opacity: 0.62;
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(79, 140, 255, 0.32) 50%, transparent 50.2%),
+    linear-gradient(30deg, transparent 49.8%, rgba(79, 140, 255, 0.22) 50%, transparent 50.2%),
+    linear-gradient(150deg, transparent 49.8%, rgba(79, 140, 255, 0.22) 50%, transparent 50.2%),
+    radial-gradient(circle at 50% 8%, rgba(79, 140, 255, 0.95) 0 0.35rem, transparent 0.42rem),
+    radial-gradient(circle at 86% 32%, rgba(79, 140, 255, 0.75) 0 0.35rem, transparent 0.42rem),
+    radial-gradient(circle at 76% 78%, rgba(79, 140, 255, 0.7) 0 0.35rem, transparent 0.42rem),
+    radial-gradient(circle at 24% 78%, rgba(79, 140, 255, 0.7) 0 0.35rem, transparent 0.42rem),
+    radial-gradient(circle at 14% 32%, rgba(79, 140, 255, 0.75) 0 0.35rem, transparent 0.42rem);
+  clip-path: polygon(50% 3%, 88% 28%, 75% 86%, 25% 86%, 12% 28%);
   transform: translate3d(12vw, 2vh, 0) scale(0.62);
+}
+
+.lore .scene-bg__embers {
+  background:
+    linear-gradient(90deg, transparent, rgba(79, 140, 255, 0.34), transparent) 24% 68% / 20rem 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(79, 140, 255, 0.24), transparent) 18% 76% / 14rem 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(79, 140, 255, 0.22), transparent) 32% 84% / 17rem 1px no-repeat;
+  opacity: 0.55;
 }
 
 .quest-log {
@@ -656,14 +747,38 @@ p {
 
 .quest-log .scene-bg__deep {
   background:
-    radial-gradient(circle at 74% 48%, rgba(208, 75, 66, 0.25), transparent 17rem),
-    repeating-linear-gradient(0deg, transparent 0 2.2rem, rgba(208, 75, 66, 0.075) 2.2rem 2.26rem),
+    linear-gradient(90deg, transparent 0 4rem, rgba(208, 75, 66, 0.1) 4rem 4.08rem, transparent 4.08rem 8rem),
+    linear-gradient(0deg, transparent 0 3.2rem, rgba(208, 75, 66, 0.08) 3.2rem 3.28rem, transparent 3.28rem 6.4rem),
+    radial-gradient(circle at 74% 48%, rgba(208, 75, 66, 0.27), transparent 17rem),
     linear-gradient(180deg, #090606, #050506);
 }
 
+.quest-log .scene-bg__halo {
+  background:
+    repeating-conic-gradient(from 0deg at 72% 48%, rgba(208, 75, 66, 0.2) 0 2deg, transparent 2deg 20deg),
+    radial-gradient(circle at 72% 48%, transparent 0 7rem, rgba(208, 75, 66, 0.36) 7.1rem 7.2rem, transparent 7.3rem 12rem, rgba(208, 75, 66, 0.24) 12.1rem 12.2rem, transparent 12.3rem);
+  mask-image: radial-gradient(circle at 72% 48%, black, transparent 22rem);
+  animation-duration: 18s;
+}
+
 .quest-log .scene-bg__chart {
+  background:
+    linear-gradient(28deg, transparent 42%, rgba(208, 75, 66, 0.45) 42.2% 42.8%, transparent 43%),
+    linear-gradient(152deg, transparent 41%, rgba(208, 75, 66, 0.35) 41.2% 41.8%, transparent 42%),
+    radial-gradient(circle at 16% 72%, rgba(208, 75, 66, 0.9) 0 0.45rem, transparent 0.52rem),
+    radial-gradient(circle at 43% 48%, rgba(208, 75, 66, 0.75) 0 0.4rem, transparent 0.48rem),
+    radial-gradient(circle at 77% 28%, rgba(208, 75, 66, 0.95) 0 0.5rem, transparent 0.6rem),
+    repeating-linear-gradient(0deg, transparent 0 1.2rem, rgba(208, 75, 66, 0.12) 1.2rem 1.25rem);
+  clip-path: polygon(8% 18%, 92% 8%, 86% 88%, 16% 80%);
   transform: translate3d(25vw, 2vh, 0) scale(0.54);
   opacity: 0.72;
+}
+
+.quest-log .scene-bg__embers {
+  background:
+    radial-gradient(circle, rgba(208, 75, 66, 0.92) 0 1px, transparent 2px) 18% 28% / 8rem 8rem,
+    radial-gradient(circle, rgba(242, 192, 109, 0.62) 0 1px, transparent 2px) 82% 62% / 10rem 10rem,
+    linear-gradient(90deg, transparent, rgba(208, 75, 66, 0.38), transparent) 52% 72% / 28rem 1px no-repeat;
 }
 
 .academy {
@@ -672,13 +787,39 @@ p {
 
 .academy .scene-bg__deep {
   background:
-    radial-gradient(circle at 48% 52%, rgba(47, 210, 196, 0.18), transparent 22rem),
-    repeating-linear-gradient(90deg, transparent 0 5.5rem, rgba(47, 210, 196, 0.08) 5.5rem 5.55rem),
+    radial-gradient(circle at 50% 52%, rgba(47, 210, 196, 0.22), transparent 22rem),
+    linear-gradient(90deg, transparent 0 5.5rem, rgba(47, 210, 196, 0.08) 5.5rem 5.56rem, transparent 5.56rem 11rem),
+    linear-gradient(0deg, transparent 0 4.4rem, rgba(47, 210, 196, 0.06) 4.4rem 4.46rem, transparent 4.46rem 8.8rem),
     linear-gradient(180deg, #03090a, #040706);
 }
 
 .academy .scene-bg__halo {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(47, 210, 196, 0.2), transparent 8rem),
+    repeating-radial-gradient(circle at 50% 50%, transparent 0 5.4rem, rgba(47, 210, 196, 0.18) 5.45rem 5.55rem),
+    repeating-conic-gradient(from 45deg at 50% 50%, transparent 0 30deg, rgba(47, 210, 196, 0.18) 30deg 31deg, transparent 31deg 60deg);
   animation-duration: 44s;
+}
+
+.academy .scene-bg__chart {
+  opacity: 0.66;
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(47, 210, 196, 0.42) 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, rgba(47, 210, 196, 0.32) 50%, transparent 50.2%),
+    radial-gradient(circle at 50% 50%, rgba(47, 210, 196, 0.95) 0 0.6rem, transparent 0.7rem),
+    radial-gradient(circle at 25% 25%, rgba(242, 192, 109, 0.78) 0 0.42rem, transparent 0.5rem),
+    radial-gradient(circle at 75% 25%, rgba(242, 192, 109, 0.78) 0 0.42rem, transparent 0.5rem),
+    radial-gradient(circle at 25% 75%, rgba(242, 192, 109, 0.78) 0 0.42rem, transparent 0.5rem),
+    radial-gradient(circle at 75% 75%, rgba(242, 192, 109, 0.78) 0 0.42rem, transparent 0.5rem);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  transform: translate3d(6vw, 0, 0) scale(0.62);
+}
+
+.academy .scene-bg__embers {
+  background:
+    linear-gradient(35deg, transparent 47%, rgba(47, 210, 196, 0.36) 47.2% 47.7%, transparent 48%) 26% 42% / 26rem 16rem no-repeat,
+    linear-gradient(145deg, transparent 47%, rgba(47, 210, 196, 0.28) 47.2% 47.7%, transparent 48%) 54% 46% / 24rem 15rem no-repeat,
+    radial-gradient(circle, rgba(47, 210, 196, 0.78) 0 1px, transparent 2px) 74% 20% / 9rem 9rem;
 }
 
 .artifacts {
@@ -687,20 +828,73 @@ p {
 
 .artifacts .scene-bg__deep {
   background:
-    radial-gradient(circle at 52% 45%, rgba(143, 85, 216, 0.2), transparent 20rem),
-    linear-gradient(180deg, rgba(42, 20, 59, 0.35), rgba(5, 4, 8, 0.9)),
-    repeating-linear-gradient(90deg, rgba(143, 85, 216, 0.08) 0 1px, transparent 1px 7.4rem);
+    linear-gradient(0deg, rgba(143, 85, 216, 0.12) 0 1px, transparent 1px 11rem),
+    linear-gradient(90deg, rgba(143, 85, 216, 0.1) 0 1px, transparent 1px 7.4rem),
+    radial-gradient(circle at 52% 45%, rgba(143, 85, 216, 0.24), transparent 20rem),
+    linear-gradient(180deg, rgba(42, 20, 59, 0.35), rgba(5, 4, 8, 0.9));
+}
+
+.artifacts .scene-bg__halo {
+  background:
+    radial-gradient(ellipse at 50% 72%, rgba(143, 85, 216, 0.24), transparent 22rem),
+    linear-gradient(90deg, transparent 0 18%, rgba(143, 85, 216, 0.18) 18% 19%, transparent 19% 31%, rgba(201, 138, 55, 0.18) 31% 32%, transparent 32% 44%, rgba(143, 85, 216, 0.16) 44% 45%, transparent 45% 57%, rgba(201, 138, 55, 0.16) 57% 58%, transparent 58% 70%, rgba(143, 85, 216, 0.18) 70% 71%, transparent 71%);
+  mask-image: linear-gradient(180deg, transparent 8%, black 30%, black 86%, transparent);
+}
+
+.artifacts .scene-bg__chart {
+  opacity: 0.58;
+  background:
+    linear-gradient(90deg, rgba(143, 85, 216, 0.54) 0 1px, transparent 1px 4.5rem),
+    radial-gradient(circle at 50% 38%, transparent 0 4rem, rgba(143, 85, 216, 0.45) 4.05rem 4.18rem, transparent 4.25rem),
+    radial-gradient(circle at 50% 38%, rgba(201, 138, 55, 0.65) 0 0.4rem, transparent 0.48rem);
+  clip-path: polygon(9% 12%, 91% 12%, 82% 88%, 18% 88%);
+  transform: translate3d(0, 4vh, 0) scale(0.72);
+}
+
+.artifacts .scene-bg__embers {
+  background:
+    radial-gradient(circle, rgba(143, 85, 216, 0.8) 0 1px, transparent 2px) 12% 24% / 10rem 10rem,
+    radial-gradient(circle, rgba(201, 138, 55, 0.66) 0 1px, transparent 2px) 84% 26% / 12rem 12rem,
+    linear-gradient(90deg, transparent, rgba(143, 85, 216, 0.36), transparent) 50% 84% / 42rem 1px no-repeat;
 }
 
 .contact {
-  --section-accent: var(--gold);
+  --section-accent: var(--rose);
 }
 
 .contact .scene-bg__deep {
   background:
-    radial-gradient(circle at 52% 54%, rgba(201, 138, 55, 0.2), transparent 18rem),
-    radial-gradient(circle at 75% 58%, rgba(47, 210, 196, 0.12), transparent 15rem),
-    linear-gradient(180deg, #060604, #050607);
+    linear-gradient(35deg, transparent 0 48%, rgba(230, 95, 154, 0.11) 48.2% 48.8%, transparent 49%),
+    linear-gradient(145deg, transparent 0 48%, rgba(143, 85, 216, 0.11) 48.2% 48.8%, transparent 49%),
+    radial-gradient(circle at 52% 54%, rgba(230, 95, 154, 0.24), transparent 18rem),
+    radial-gradient(circle at 75% 58%, rgba(143, 85, 216, 0.18), transparent 15rem),
+    linear-gradient(180deg, #090409, #050507);
+}
+
+.contact .scene-bg__halo {
+  background:
+    radial-gradient(circle at 50% 58%, rgba(230, 95, 154, 0.22), transparent 7rem),
+    repeating-conic-gradient(from 0deg at 50% 58%, transparent 0 42deg, rgba(230, 95, 154, 0.2) 42deg 43deg, transparent 43deg 90deg);
+  mask-image: radial-gradient(circle at 50% 58%, black, transparent 22rem);
+}
+
+.contact .scene-bg__chart {
+  opacity: 0.64;
+  background:
+    linear-gradient(28deg, transparent 47%, rgba(230, 95, 154, 0.45) 47.2% 47.7%, transparent 48%) 50% 50% / 32rem 22rem no-repeat,
+    linear-gradient(152deg, transparent 47%, rgba(143, 85, 216, 0.36) 47.2% 47.7%, transparent 48%) 50% 50% / 32rem 22rem no-repeat,
+    radial-gradient(circle at 50% 28%, rgba(230, 95, 154, 0.9) 0 0.5rem, transparent 0.62rem),
+    radial-gradient(circle at 28% 70%, rgba(47, 210, 196, 0.75) 0 0.5rem, transparent 0.62rem),
+    radial-gradient(circle at 72% 70%, rgba(143, 85, 216, 0.8) 0 0.5rem, transparent 0.62rem);
+  clip-path: polygon(50% 4%, 96% 72%, 4% 72%);
+  transform: translate3d(0, 1vh, 0) scale(0.7);
+}
+
+.contact .scene-bg__embers {
+  background:
+    radial-gradient(circle, rgba(230, 95, 154, 0.82) 0 1px, transparent 2px) 22% 32% / 10rem 10rem,
+    radial-gradient(circle, rgba(47, 210, 196, 0.62) 0 1px, transparent 2px) 74% 70% / 9rem 9rem,
+    radial-gradient(circle, rgba(143, 85, 216, 0.7) 0 1px, transparent 2px) 82% 28% / 11rem 11rem;
 }
 
 .lore .hud-body,

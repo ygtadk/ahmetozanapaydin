@@ -25,14 +25,6 @@ const locale = Astro.currentLocale;
 		<link rel="alternate" hreflang="tr" href="/tr/" />
 		<link rel="alternate" hreflang="x-default" href="/" />
 		<title>{t(locale, "meta.title")}</title>
-		<script is:inline>
-			const prefersTurkish = navigator.languages?.some((language) => language.toLowerCase().startsWith("tr"))
-				|| navigator.language?.toLowerCase().startsWith("tr");
-
-			if (location.pathname === "/" && prefersTurkish) {
-				location.replace(`/tr/${location.search}${location.hash}`);
-			}
-		</script>
 	</head>
 	<body>
 		<WorldField />
